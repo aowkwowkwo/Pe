@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penjualan Produk</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #f4f4f4; }
+        .container { margin: 50px auto; max-width: 600px; background: white; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); }
+        .product { padding: 10px; border-bottom: 1px solid #ddd; }
+        .product:last-child { border-bottom: none; }
+        img { width: 200px; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 10px; display: block; margin-left: auto; margin-right: auto; }
+        button { background-color: #28a745; color: white; padding: 10px; border: none; cursor: pointer; border-radius: 5px; }
+        button:hover { background-color: #218838; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Produk Dijual</h2>
+        <div class="product">
+            <img src="https://h.top4top.io/p_3340d57ve2.jpg" alt="TeleXrat">
+            <h3>TeleXrat</h3>
+            <p>Harga: 30K</p>
+            <button onclick="order('TeleXrat')">Beli</button>
+        </div>
+        <div class="product">
+            <img src="https://d.top4top.io/p_3339h4b4f0.jpg" alt="smsXrat">
+            <h3>smsXrat</h3>
+            <p>Harga: 15K</p>
+            <button onclick="order('smsXrat')">Beli</button>
+        </div>
+        <div class="product">
+            <img src="https://j.top4top.io/p_3340s64no4.jpg" alt="Galeri rat">
+            <h3>Galeri rat</h3>
+            <p>Harga: 25K</p>
+            <button onclick="order('Galeri rat')">Beli</button>
+        </div>
+        <div class="product">
+            <img src="https://l.top4top.io/p_3340abvam5.jpg" alt="Tols galrat">
+            <h3>Tols galrat</h3>
+            <p>Harga: 30K</p>
+            <button onclick="order('Tols galrat')">Beli</button>
+        </div>
+    </div>
+
+    <script>
+        function order(product) {
+            var phoneNumber = "6289648191199"; // Nomor penjual
+            var message = encodeURIComponent("Halo, saya ingin membeli " + product + ". Apakah stok masih tersedia?");
+            window.location.href = "https://wa.me/" + phoneNumber + "?text=" + message;
+        }
+    </script>
+</body>
+</html>
