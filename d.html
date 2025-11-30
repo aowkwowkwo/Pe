@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HACKED BY HellR00TERS Team</title>
+    <link href="https://fonts.googleapis.com/css2?family=Iceland&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #000000;
+            color: #ffffff;
+            text-align: center;
+            font-family: 'Iceland', cursive;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background: linear-gradient(45deg, #000000, #1a0000, #000000);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .title {
+            font-size: 4em;
+            color: #ff0000;
+            margin: 30px 0;
+            text-shadow: 0 0 20px #ff0000, 0 0 40px #ff0000;
+            animation: glow 2s ease-in-out infinite alternate;
+            letter-spacing: 3px;
+        }
+        
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 20px #ff0000, 0 0 30px #ff0000;
+            }
+            to {
+                text-shadow: 0 0 30px #ff0000, 0 0 50px #ff0000, 0 0 60px #ff0000;
+            }
+        }
+        
+        .logo {
+            margin: 30px 0;
+        }
+        
+        .logo img {
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #ff0000;
+            box-shadow: 0 0 30px #ff0000;
+            transition: transform 0.3s ease;
+        }
+        
+        .logo img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 50px #ff0000;
+        }
+        
+        .content {
+            font-size: 1.8em;
+            margin: 40px 20px;
+            line-height: 1.6;
+            text-shadow: 0 0 10px #ffffff;
+        }
+        
+        .team-name {
+            color: #ff0000;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        
+        .message {
+            color: #00ff00;
+            background: rgba(0, 255, 0, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #00ff00;
+            margin: 20px 0;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+            font-size: 1.4em;
+        }
+        
+        .audio-player {
+            margin: 40px 0;
+            background: rgba(255, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #ff0000;
+        }
+        
+        audio {
+            width: 80%;
+            max-width: 500px;
+            height: 50px;
+        }
+        
+        .footer {
+            margin-top: 50px;
+            font-size: 1.3em;
+            color: #888888;
+            text-shadow: 0 0 10px #888888;
+            padding: 20px;
+        }
+        
+        .hacker-text {
+            background: rgba(255, 0, 0, 0.2);
+            padding: 15px;
+            border-left: 3px solid #ff0000;
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        .pulse {
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        
+        /* Matrix rain effect */
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.5em;
+            }
+            
+            .logo img {
+                width: 200px;
+                height: 200px;
+            }
+            
+            .content {
+                font-size: 1.4em;
+            }
+            
+            .message {
+                font-size: 1.1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Matrix Background Effect -->
+    <canvas class="matrix-bg" id="matrix"></canvas>
+    
+    <div class="container">
+        <h1 class="title pulse">Hacked By HELLR00TERS TEAM</h1>
+        
+        <div class="logo">
+            <img src="https://g.top4top.io/p_3453skjo43.png" alt="HellR00ters Logo" onerror="this.style.display='none'">
+        </div>
+        
+        <div class="content">
+            <p>This site has been <span class="team-name">Hacked by HellR00ters Team</span></p>
+            
+            <div class="message">
+                <strong>⚠️ SECURITY WARNING ⚠️</strong><br><br>
+                Hey India, hey Indian citizens, stop trampling on my Islamic religion, 
+                immediately clarify on Instagram, just like when you first trampled on the Arab Pakistani poster, 
+                I will wait for your clarification. #OPINDIA #FUCKINDIA
+            </div>
+            
+            <div class="hacker-text">
+                <strong>System Message:</strong><br>
+                Security protocols have been bypassed<br>
+                Administrative access obtained<br>
+                System integrity compromised
+            </div>
+        </div>
+        
+        <div class="audio-player">
+            <audio controls autoplay loop>
+                <source src="https://b.top4top.io/m_3502gr7gh0.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+        </div>
+        
+        <div class="footer">
+            HELLR00TERS Team Was Here<br>
+            <span style="font-size: 0.8em;">Security is just an illusion</span>
+        </div>
+    </div>
+
+    <script>
+        // Matrix Rain Effect
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$#@%&*/?=+";
+        const charArray = chars.split('');
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+        
+        for(let i = 0; i < columns; i++) {
+            drops[i] = 1;
+        }
+        
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#0F0';
+            ctx.font = fontSize + 'px monospace';
+            
+            for(let i = 0; i < drops.length; i++) {
+                const text = charArray[Math.floor(Math.random() * charArray.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                
+                if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+        
+        setInterval(drawMatrix, 35);
+        
+        // Protection Script
+        setInterval(function() {
+            if (!document.body || document.body.innerHTML.indexOf("HellR00TERS") === -1) {
+                location.reload();
+            }
+        }, 2000);
+        
+        // Disable right click
+        document.addEventListener("contextmenu", function(e) { 
+            e.preventDefault(); 
+        });
+        
+        // Disable F12, Ctrl+Shift+I, etc.
+        document.onkeydown = function(e) {
+            if (e.keyCode == 123 || 
+                (e.ctrlKey && e.shiftKey && e.keyCode == 73) || 
+                (e.ctrlKey && e.keyCode == 85)) {
+                return false;
+            }
+        };
+        
+        // Resize canvas on window resize
+        window.addEventListener('resize', function() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+        
+        // Audio auto-play handler
+        document.addEventListener('click', function() {
+            const audio = document.querySelector('audio');
+            if (audio.paused) {
+                audio.play().catch(e => console.log('Audio play failed:', e));
+            }
+        });
+        
+        console.log('HELLR00TERS TEAM - SYSTEM ACCESS GRANTED');
+    </script>
+</body>
+</html>
